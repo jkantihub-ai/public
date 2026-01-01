@@ -1,221 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; media-src *; img-src 'self' data: content:;">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827"/>
-  <link rel="manifest" href="manifest.json">
-  <title>World Clock</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1e293b">
+    <title>World Clock</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIldvcmxkIENsb2NrIiwKICAic2hvcnRfbmFtZSI6ICJDbG9jayIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMWUyOTNiIiwKICAidGhlbWVfY29sb3IiOiAiIzFlMjkzYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCclM0UlM0NjaXJjbGUgY3g9JzUwJyBjeT0nNTAnIHI9JzQ1JyBmaWxsPSclMjMzYjgyZjYnLyUzRSUzQ3RleHQgeD0nNTAnIHk9JzYwJyBmb250LXNpemU9JzQwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSd3aGl0ZSclM0UlRjAlOUYlOEMlOEQlM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCclM0UlM0NjaXJjbGUgY3g9JzUwJyBjeT0nNTAnIHI9JzQ1JyBmaWxsPSclMjMzYjgyZjYnLyUzRSUzQ3RleHQgeD0nNTAnIHk9JzYwJyBmb250LXNpemU9JzQwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSd3aGl0ZSclM0UlRjAlOUYlOEMlOEQlM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            padding-bottom: 100px;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .add-city-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 10px;
+            padding: 0 10px;
+        }
+
+        #citySelect {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        #citySelect option {
+            background: #1e293b;
+            color: white;
+        }
+
+        #addCityBtn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            background: #3b82f6;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #addCityBtn:hover {
+            background: #2563eb;
+        }
+
+        #addCityBtn:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .install-container {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            padding: 0 10px;
+        }
+
+        .install-btn {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            display: none;
+        }
+
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .install-btn.show {
+            display: block;
+        }
+
+        .installed-message {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 10px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+            text-align: center;
+            display: none;
+        }
+
+        .installed-message.show {
+            display: block;
+        }
+
+        .readme-section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .readme-section h2 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .readme-section h3 {
+            color: #93c5fd;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .readme-section p {
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        .readme-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .readme-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #cbd5e1;
+        }
+
+        .readme-section li:before {
+            content: "•";
+            color: #60a5fa;
+            font-weight: bold;
+            position: absolute;
+            left: 5px;
+        }
+
+        .bottom-install-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .bottom-install-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .bottom-install-text {
+            flex: 1;
+        }
+
+        .bottom-install-text h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .bottom-install-text p {
+            margin: 5px 0 0 0;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .bottom-install-btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            white-space: nowrap;
+        }
+
+        .bottom-install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .bottom-install-bar.hide {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-install-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bottom-install-btn {
+                width: 100%;
+            }
+        }
+
+        .clocks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .clock-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .clock-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            line-height: 1;
+        }
+
+        .remove-btn:hover {
+            background: rgba(220, 38, 38, 0.9);
+        }
+
+        .clock-card {
+            position: relative;
+        }
+
+        .city-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #60a5fa;
+        }
+
+        .time {
+            font-size: 3rem;
+            font-weight: 300;
+            font-variant-numeric: tabular-nums;
+            margin: 20px 0;
+        }
+
+        .date {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .timezone {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .time {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-900">
-  <main class="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 sm:p-8 font-sans antialiased">
-    <header class="text-center mb-10 md:mb-16">
-      <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-        World Clock
-      </h1>
-      <p class="mt-4 text-lg text-gray-400">Analog & Digital clocks from around the globe</p>
+<body>
+    <header>
+        <h1>🌍 World Clock</h1>
+        <p class="subtitle">Keep track of time around the world</p>
     </header>
 
-    <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6 md:gap-8">
-      <!-- San Francisco -->
-      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="text-2xl font-bold text-white">San Francisco</h2>
-          <p class="text-sm font-medium text-gray-400">USA</p>
+    <div class="install-container">
+        <button id="installBtn" class="install-btn">
+            📱 Install App
+        </button>
+        <div id="installedMessage" class="installed-message">
+            ✓ App is installed! Open from your home screen
         </div>
-        <div class="w-full aspect-square mx-auto mb-4">
-          <svg id="sf-analog" viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
-            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
-            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
-            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line id="sf-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
-            <line id="sf-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
-            <line id="sf-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
-          </svg>
-        </div>
-        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
-          <span id="sf-time" class="text-gray-100">--:--:--</span>
-          <span id="sf-period" class="text-xl ml-2 text-gray-400">--</span>
-        </div>
-        <div class="text-center text-gray-400 text-sm mt-2">
-          <p id="sf-date">Loading...</p>
-        </div>
-      </div>
-
-      <!-- New York -->
-      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="text-2xl font-bold text-white">New York</h2>
-          <p class="text-sm font-medium text-gray-400">USA</p>
-        </div>
-        <div class="w-full aspect-square mx-auto mb-4">
-          <svg id="ny-analog" viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
-            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
-            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
-            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line id="ny-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
-            <line id="ny-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
-            <line id="ny-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
-          </svg>
-        </div>
-        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
-          <span id="ny-time" class="text-gray-100">--:--:--</span>
-          <span id="ny-period" class="text-xl ml-2 text-gray-400">--</span>
-        </div>
-        <div class="text-center text-gray-400 text-sm mt-2">
-          <p id="ny-date">Loading...</p>
-        </div>
-      </div>
-
-      <!-- Singapore -->
-      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="text-2xl font-bold text-white">Singapore</h2>
-          <p class="text-sm font-medium text-gray-400">Singapore</p>
-        </div>
-        <div class="w-full aspect-square mx-auto mb-4">
-          <svg id="sg-analog" viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
-            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
-            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
-            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line id="sg-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
-            <line id="sg-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
-            <line id="sg-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
-          </svg>
-        </div>
-        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
-          <span id="sg-time" class="text-gray-100">--:--:--</span>
-          <span id="sg-period" class="text-xl ml-2 text-gray-400">--</span>
-        </div>
-        <div class="text-center text-gray-400 text-sm mt-2">
-          <p id="sg-date">Loading...</p>
-        </div>
-      </div>
-      
-      <!-- Dubai -->
-      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
-        <div class="flex justify-between items-baseline mb-4">
-          <h2 class="text-2xl font-bold text-white">Dubai</h2>
-          <p class="text-sm font-medium text-gray-400">UAE</p>
-        </div>
-        <div class="w-full aspect-square mx-auto mb-4">
-          <svg id="db-analog" viewBox="0 0 100 100" class="w-full h-full">
-            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
-            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
-            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
-            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
-            <line id="db-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
-            <line id="db-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
-            <line id="db-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
-            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
-          </svg>
-        </div>
-        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
-          <span id="db-time" class="text-gray-100">--:--:--</span>
-          <span id="db-period" class="text-xl ml-2 text-gray-400">--</span>
-        </div>
-        <div class="text-center text-gray-400 text-sm mt-2">
-          <p id="db-date">Loading...</p>
-        </div>
-      </div>
     </div>
 
-    <footer class="mt-12 text-center text-gray-500 text-sm">
-      <p>Powered by HTML, Tailwind CSS & JavaScript</p>
-    </footer>
-  </main>
-  
-  <script>
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, err => {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
+    <div class="add-city-container">
+        <select id="citySelect">
+            <option value="">Select a city to add...</option>
+        </select>
+        <button id="addCityBtn">Add City</button>
+    </div>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const cities = [
-        { id: 'sf', timezone: 'America/Los_Angeles' },
-        { id: 'ny', timezone: 'America/New_York' },
-        { id: 'sg', timezone: 'Asia/Singapore' },
-        { id: 'db', timezone: 'Asia/Dubai' },
-      ];
+    <div class="clocks-container" id="clocksContainer"></div>
 
-      function getPart(parts, type) {
-        return parts.find(p => p.type === type)?.value ?? '';
-      }
-      
-      function getClockDataForCity(date, city) {
-        const options = { timeZone: city.timezone };
-        const timeFormatter = new Intl.DateTimeFormat('en-US', { ...options, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        const dateFormatter = new Intl.DateTimeFormat('en-US', { ...options, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        const partsFormatter = new Intl.DateTimeFormat('en-US', { ...options, hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+    <div class="readme-section">
+        <h2>📖 How to Use World Clock</h2>
         
-        const digitalParts = timeFormatter.formatToParts(date);
-        const dateString = dateFormatter.format(date);
-        const timeString = `${getPart(digitalParts, 'hour')}:${getPart(digitalParts, 'minute')}:${getPart(digitalParts, 'second')}`;
-        const periodString = getPart(digitalParts, 'dayPeriod');
+        <h3>🌍 Managing Cities</h3>
+        <ul>
+            <li><strong>Add a City:</strong> Select a city from the dropdown menu and click "Add City"</li>
+            <li><strong>Remove a City:</strong> Click the × button in the top-right corner of any clock card</li>
+            <li><strong>25+ Cities Available:</strong> Choose from major cities across all continents</li>
+        </ul>
+
+        <h3>📱 Install as an App</h3>
+        <p><strong>Why install?</strong> Get quick access from your home screen, work offline, and enjoy a native app experience!</p>
         
-        const timeParts = partsFormatter.formatToParts(date);
-        const hours = parseInt(getPart(timeParts, 'hour'), 10);
-        const minutes = parseInt(getPart(timeParts, 'minute'), 10);
-        const seconds = parseInt(getPart(timeParts, 'second'), 10);
+        <p><strong>Desktop (Chrome/Edge/Brave):</strong></p>
+        <ul>
+            <li>Click the "Install App" button at the top or bottom of the page</li>
+            <li>Or click the install icon in your browser's address bar</li>
+            <li>The app will open in its own window without browser tabs</li>
+        </ul>
 
-        return {
-          digital: { time: timeString, date: dateString, period: periodString },
-          analog: { hours, minutes, seconds }
-        };
-      }
+        <p><strong>Android:</strong></p>
+        <ul>
+            <li>Click "Install App" button when prompted</li>
+            <li>Or tap the three dots menu → "Add to Home screen"</li>
+            <li>Launch from your app drawer like any other app</li>
+        </ul>
 
-      function updateClocks() {
-        const now = new Date();
-        cities.forEach(city => {
-            const clockData = getClockDataForCity(now, city);
+        <p><strong>iOS (iPhone/iPad):</strong></p>
+        <ul>
+            <li>Tap the Share button (square with arrow)</li>
+            <li>Scroll down and tap "Add to Home Screen"</li>
+            <li>Tap "Add" to confirm</li>
+            <li>Open from your home screen</li>
+        </ul>
+
+        <h3>✨ Features</h3>
+        <ul>
+            <li>Real-time updates every second</li>
+            <li>Beautiful dark theme design</li>
+            <li>Fully responsive on all devices</li>
+            <li>Works offline after installation</li>
+            <li>No tracking, no ads, no login required</li>
+        </ul>
+    </div>
+
+    <div class="bottom-install-bar" id="bottomInstallBar">
+        <div class="bottom-install-content">
+            <div class="bottom-install-text">
+                <h3>📱 Install World Clock</h3>
+                <p>Get quick access from your home screen</p>
+            </div>
+            <button id="bottomInstallBtn" class="bottom-install-btn">
+                Install App
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const allCities = [
+            { name: 'New York', timezone: 'America/New_York' },
+            { name: 'London', timezone: 'Europe/London' },
+            { name: 'Tokyo', timezone: 'Asia/Tokyo' },
+            { name: 'Sydney', timezone: 'Australia/Sydney' },
+            { name: 'Dubai', timezone: 'Asia/Dubai' },
+            { name: 'Paris', timezone: 'Europe/Paris' },
+            { name: 'Berlin', timezone: 'Europe/Berlin' },
+            { name: 'Hong Kong', timezone: 'Asia/Hong_Kong' },
+            { name: 'Singapore', timezone: 'Asia/Singapore' },
+            { name: 'Mumbai', timezone: 'Asia/Kolkata' },
+            { name: 'Los Angeles', timezone: 'America/Los_Angeles' },
+            { name: 'Chicago', timezone: 'America/Chicago' },
+            { name: 'Toronto', timezone: 'America/Toronto' },
+            { name: 'São Paulo', timezone: 'America/Sao_Paulo' },
+            { name: 'Mexico City', timezone: 'America/Mexico_City' },
+            { name: 'Moscow', timezone: 'Europe/Moscow' },
+            { name: 'Istanbul', timezone: 'Europe/Istanbul' },
+            { name: 'Seoul', timezone: 'Asia/Seoul' },
+            { name: 'Shanghai', timezone: 'Asia/Shanghai' },
+            { name: 'Beijing', timezone: 'Asia/Shanghai' },
+            { name: 'Bangkok', timezone: 'Asia/Bangkok' },
+            { name: 'Jakarta', timezone: 'Asia/Jakarta' },
+            { name: 'Cairo', timezone: 'Africa/Cairo' },
+            { name: 'Johannesburg', timezone: 'Africa/Johannesburg' },
+            { name: 'Auckland', timezone: 'Pacific/Auckland' }
+        ];
+
+        let activeCities = [
+            { name: 'New York', timezone: 'America/New_York' },
+            { name: 'London', timezone: 'Europe/London' },
+            { name: 'Tokyo', timezone: 'Asia/Tokyo' }
+        ];
+
+        function populateDropdown() {
+            const select = document.getElementById('citySelect');
+            select.innerHTML = '<option value="">Select a city to add...</option>';
             
-            // Update Digital Clock
-            const timeEl = document.getElementById(`${city.id}-time`);
-            const periodEl = document.getElementById(`${city.id}-period`);
-            const dateEl = document.getElementById(`${city.id}-date`);
+            const availableCities = allCities.filter(city => 
+                !activeCities.some(active => active.timezone === city.timezone)
+            );
+
+            availableCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.timezone;
+                option.textContent = city.name;
+                select.appendChild(option);
+            });
+        }
+
+        function addCity() {
+            const select = document.getElementById('citySelect');
+            const timezone = select.value;
             
-            if (timeEl) timeEl.textContent = clockData.digital.time;
-            if (periodEl) periodEl.textContent = clockData.digital.period;
-            if (dateEl) dateEl.textContent = clockData.digital.date;
+            if (!timezone) return;
 
-            // Update Analog Clock
-            const { hours, minutes, seconds } = clockData.analog;
-            const hourHand = document.getElementById(`${city.id}-hour-hand`);
-            const minuteHand = document.getElementById(`${city.id}-minute-hand`);
-            const secondHand = document.getElementById(`${city.id}-second-hand`);
+            const city = allCities.find(c => c.timezone === timezone);
+            if (city && !activeCities.some(c => c.timezone === timezone)) {
+                activeCities.push(city);
+                populateDropdown();
+                updateClocks();
+                select.value = '';
+            }
+        }
 
-            const secondsDeg = (seconds / 60) * 360;
-            const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
-            const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
+        function removeCity(timezone) {
+            activeCities = activeCities.filter(city => city.timezone !== timezone);
+            populateDropdown();
+            updateClocks();
+        }
 
-            if(secondHand) secondHand.setAttribute('transform', `rotate(${secondsDeg}, 50, 50)`);
-            if(minuteHand) minuteHand.setAttribute('transform', `rotate(${minutesDeg}, 50, 50)`);
-            if(hourHand) hourHand.setAttribute('transform', `rotate(${hoursDeg}, 50, 50)`);
+        function updateClocks() {
+            const container = document.getElementById('clocksContainer');
+            container.innerHTML = '';
+
+            activeCities.forEach(city => {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', {
+                    timeZone: city.timezone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+
+                const dateString = now.toLocaleDateString('en-US', {
+                    timeZone: city.timezone,
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                const card = document.createElement('div');
+                card.className = 'clock-card';
+                card.innerHTML = `
+                    <button class="remove-btn" onclick="removeCity('${city.timezone}')" title="Remove ${city.name}">×</button>
+                    <div class="city-name">${city.name}</div>
+                    <div class="time">${timeString}</div>
+                    <div class="date">${dateString}</div>
+                    <div class="timezone">${city.timezone}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.getElementById('addCityBtn').addEventListener('click', addCity);
+        document.getElementById('citySelect').addEventListener('change', (e) => {
+            document.getElementById('addCityBtn').disabled = !e.target.value;
         });
-      }
-      
-      updateClocks();
-      setInterval(updateClocks, 1000);
-    });
-  </script>
+
+        populateDropdown();
+        updateClocks();
+        setInterval(updateClocks, 1000);
+
+        // PWA Install functionality
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+        const installedMessage = document.getElementById('installedMessage');
+        const bottomInstallBar = document.getElementById('bottomInstallBar');
+        const bottomInstallBtn = document.getElementById('bottomInstallBtn');
+
+        // Check if app is already installed
+        window.addEventListener('load', () => {
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                installedMessage.classList.add('show');
+                bottomInstallBar.classList.add('hide');
+            }
+        });
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.add('show');
+            bottomInstallBar.classList.remove('hide');
+        });
+
+        async function handleInstall() {
+            if (!deferredPrompt) return;
+
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                installBtn.classList.remove('show');
+                installedMessage.classList.add('show');
+                bottomInstallBar.classList.add('hide');
+            }
+            
+            deferredPrompt = null;
+        }
+
+        installBtn.addEventListener('click', handleInstall);
+        bottomInstallBtn.addEventListener('click', handleInstall);
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.remove('show');
+            installedMessage.classList.add('show');
+            bottomInstallBar.classList.add('hide');
+        });
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    self.addEventListener('install', (e) => {
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(fetch(e.request));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl).then(() => {
+                    console.log('Service Worker registered');
+                }).catch(() => {
+                    console.log('Service Worker registration failed');
+                });
+            });
+        }
+    </script>
 </body>
 </html>
