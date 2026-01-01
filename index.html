@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap:; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; media-src *; img-src 'self' data: content:;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827"/>
+  <link rel="manifest" href="manifest.json">
+  <title>World Clock</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900">
+  <main class="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4 sm:p-8 font-sans antialiased">
+    <header class="text-center mb-10 md:mb-16">
+      <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+        World Clock
+      </h1>
+      <p class="mt-4 text-lg text-gray-400">Analog & Digital clocks from around the globe</p>
+    </header>
+
+    <div class="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-6 md:gap-8">
+      <!-- San Francisco -->
+      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
+        <div class="flex justify-between items-baseline mb-4">
+          <h2 class="text-2xl font-bold text-white">San Francisco</h2>
+          <p class="text-sm font-medium text-gray-400">USA</p>
+        </div>
+        <div class="w-full aspect-square mx-auto mb-4">
+          <svg id="sf-analog" viewBox="0 0 100 100" class="w-full h-full">
+            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
+            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
+            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
+            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line id="sf-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
+            <line id="sf-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
+            <line id="sf-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
+          </svg>
+        </div>
+        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
+          <span id="sf-time" class="text-gray-100">--:--:--</span>
+          <span id="sf-period" class="text-xl ml-2 text-gray-400">--</span>
+        </div>
+        <div class="text-center text-gray-400 text-sm mt-2">
+          <p id="sf-date">Loading...</p>
+        </div>
+      </div>
+
+      <!-- New York -->
+      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
+        <div class="flex justify-between items-baseline mb-4">
+          <h2 class="text-2xl font-bold text-white">New York</h2>
+          <p class="text-sm font-medium text-gray-400">USA</p>
+        </div>
+        <div class="w-full aspect-square mx-auto mb-4">
+          <svg id="ny-analog" viewBox="0 0 100 100" class="w-full h-full">
+            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
+            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
+            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
+            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line id="ny-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
+            <line id="ny-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
+            <line id="ny-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
+          </svg>
+        </div>
+        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
+          <span id="ny-time" class="text-gray-100">--:--:--</span>
+          <span id="ny-period" class="text-xl ml-2 text-gray-400">--</span>
+        </div>
+        <div class="text-center text-gray-400 text-sm mt-2">
+          <p id="ny-date">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Singapore -->
+      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
+        <div class="flex justify-between items-baseline mb-4">
+          <h2 class="text-2xl font-bold text-white">Singapore</h2>
+          <p class="text-sm font-medium text-gray-400">Singapore</p>
+        </div>
+        <div class="w-full aspect-square mx-auto mb-4">
+          <svg id="sg-analog" viewBox="0 0 100 100" class="w-full h-full">
+            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
+            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
+            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
+            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line id="sg-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
+            <line id="sg-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
+            <line id="sg-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
+          </svg>
+        </div>
+        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
+          <span id="sg-time" class="text-gray-100">--:--:--</span>
+          <span id="sg-period" class="text-xl ml-2 text-gray-400">--</span>
+        </div>
+        <div class="text-center text-gray-400 text-sm mt-2">
+          <p id="sg-date">Loading...</p>
+        </div>
+      </div>
+      
+      <!-- Dubai -->
+      <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-lg p-6 flex flex-col transition-all duration-300 hover:shadow-2xl hover:border-purple-500 hover:-translate-y-1">
+        <div class="flex justify-between items-baseline mb-4">
+          <h2 class="text-2xl font-bold text-white">Dubai</h2>
+          <p class="text-sm font-medium text-gray-400">UAE</p>
+        </div>
+        <div class="w-full aspect-square mx-auto mb-4">
+          <svg id="db-analog" viewBox="0 0 100 100" class="w-full h-full">
+            <circle cx="50" cy="50" r="48" class="stroke-gray-600 fill-gray-800/50" stroke-width="2"/>
+            <line x1="50" y1="5" x2="50" y2="10" class="stroke-gray-400" stroke-width="1" />
+            <line x1="95" y1="50" x2="90" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line x1="50" y1="95" x2="50" y2="90" class="stroke-gray-400" stroke-width="1" />
+            <line x1="5" y1="50" x2="10" y2="50" class="stroke-gray-400" stroke-width="1" />
+            <line id="db-hour-hand" x1="50" y1="50" x2="50" y2="30" class="stroke-white" stroke-width="3" stroke-linecap="round" />
+            <line id="db-minute-hand" x1="50" y1="50" x2="50" y2="20" class="stroke-white" stroke-width="2" stroke-linecap="round" />
+            <line id="db-second-hand" x1="50" y1="50" x2="50" y2="15" class="stroke-red-500" stroke-width="1" stroke-linecap="round" />
+            <circle cx="50" cy="50" r="2" class="fill-red-500"/>
+          </svg>
+        </div>
+        <div class="flex items-baseline justify-center font-mono text-4xl font-bold tracking-tighter">
+          <span id="db-time" class="text-gray-100">--:--:--</span>
+          <span id="db-period" class="text-xl ml-2 text-gray-400">--</span>
+        </div>
+        <div class="text-center text-gray-400 text-sm mt-2">
+          <p id="db-date">Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+      <p>Powered by HTML, Tailwind CSS & JavaScript</p>
+    </footer>
+  </main>
+  
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(registration => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const cities = [
+        { id: 'sf', timezone: 'America/Los_Angeles' },
+        { id: 'ny', timezone: 'America/New_York' },
+        { id: 'sg', timezone: 'Asia/Singapore' },
+        { id: 'db', timezone: 'Asia/Dubai' },
+      ];
+
+      function getPart(parts, type) {
+        return parts.find(p => p.type === type)?.value ?? '';
+      }
+      
+      function getClockDataForCity(date, city) {
+        const options = { timeZone: city.timezone };
+        const timeFormatter = new Intl.DateTimeFormat('en-US', { ...options, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        const dateFormatter = new Intl.DateTimeFormat('en-US', { ...options, weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const partsFormatter = new Intl.DateTimeFormat('en-US', { ...options, hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+        
+        const digitalParts = timeFormatter.formatToParts(date);
+        const dateString = dateFormatter.format(date);
+        const timeString = `${getPart(digitalParts, 'hour')}:${getPart(digitalParts, 'minute')}:${getPart(digitalParts, 'second')}`;
+        const periodString = getPart(digitalParts, 'dayPeriod');
+        
+        const timeParts = partsFormatter.formatToParts(date);
+        const hours = parseInt(getPart(timeParts, 'hour'), 10);
+        const minutes = parseInt(getPart(timeParts, 'minute'), 10);
+        const seconds = parseInt(getPart(timeParts, 'second'), 10);
+
+        return {
+          digital: { time: timeString, date: dateString, period: periodString },
+          analog: { hours, minutes, seconds }
+        };
+      }
+
+      function updateClocks() {
+        const now = new Date();
+        cities.forEach(city => {
+            const clockData = getClockDataForCity(now, city);
+            
+            // Update Digital Clock
+            const timeEl = document.getElementById(`${city.id}-time`);
+            const periodEl = document.getElementById(`${city.id}-period`);
+            const dateEl = document.getElementById(`${city.id}-date`);
+            
+            if (timeEl) timeEl.textContent = clockData.digital.time;
+            if (periodEl) periodEl.textContent = clockData.digital.period;
+            if (dateEl) dateEl.textContent = clockData.digital.date;
+
+            // Update Analog Clock
+            const { hours, minutes, seconds } = clockData.analog;
+            const hourHand = document.getElementById(`${city.id}-hour-hand`);
+            const minuteHand = document.getElementById(`${city.id}-minute-hand`);
+            const secondHand = document.getElementById(`${city.id}-second-hand`);
+
+            const secondsDeg = (seconds / 60) * 360;
+            const minutesDeg = ((minutes + seconds / 60) / 60) * 360;
+            const hoursDeg = (((hours % 12) + minutes / 60) / 12) * 360;
+
+            if(secondHand) secondHand.setAttribute('transform', `rotate(${secondsDeg}, 50, 50)`);
+            if(minuteHand) minuteHand.setAttribute('transform', `rotate(${minutesDeg}, 50, 50)`);
+            if(hourHand) hourHand.setAttribute('transform', `rotate(${hoursDeg}, 50, 50)`);
+        });
+      }
+      
+      updateClocks();
+      setInterval(updateClocks, 1000);
+    });
+  </script>
+</body>
+</html>
