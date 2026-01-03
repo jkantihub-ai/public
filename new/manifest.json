@@ -1,0 +1,19 @@
+
+{
+  "name": "MantraChat",
+  "short_name": "Mantra",
+  "description": "Professional AI Dashboard with Gemini Neural Core",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/10543/10543632.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
